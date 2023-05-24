@@ -1,20 +1,31 @@
 import React from "react";
 class SearchInput extends React.Component {
-  onInputChange(event) {
-    console.log(event.target.value); // this is the text that the user typed
+  constructor(props) {
+    super(props);
+    this.state = { entry: "" };
+    this.onFormSubmit = this.onFormSubmit.bind(this); // This is for solving a common error in react where we try to access the state of undefined
   }
+
+  onFormSubmit = (event) => {
+    // Another way for solving the above problem is to make the function an arrow function
+    event.preventDefault();
+    this.props.onSearchSubmit(this.state.entry);
+  };
 
   render() {
     return (
       <div className="ui segment">
-        <form action="ui form">
+        <form action="ui form" onSubmit={this.onFormSubmit}>
           <div className="field">
             <div className="ui massive icon input">
               <input
                 type="text"
                 placeholder="search..."
-                onChange={this.onInputChange}
-              ></input>
+                onChange={(event) =>
+                  this.setState({ entry: event.target.value })
+                }
+                value={this.state.entry}
+              />
               <i className="search icon"></i>
             </div>
           </div>
